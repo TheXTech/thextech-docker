@@ -1,0 +1,27 @@
+A set of custom docker images used in the CI with the TheXTech project for convenience.
+
+# Developer notes
+Type these command at each container's directory.
+
+## Build an image:
+```bash
+docker-compose build
+```
+
+## Clean-up everything to build from the scratch
+If something went wrong, just burn everything and build it from the ground up!
+```bash
+docker-compose down -v --rmi all --remove-orphans
+```
+
+## Publishan image
+When pubinshing an update, need to type this:
+```bash
+docker push ghcr.io/thextech/<name-of-service>:latest
+```
+
+## Before to publish, need to login
+- Get a classic GitHub's access tocken first with the permission to "packages write" and "packages delete". Make it being non-expiring.
+- Remember the tocken.
+- Login `docker login ghcr.io -u <your-username>` with the command and pasting token as a password
+- And now, do publishing or deleting of containers.

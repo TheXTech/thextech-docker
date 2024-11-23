@@ -1,0 +1,7 @@
+services:
+  wohlnet-ci-ubuntu1604-32bit:
+    image: ghcr.io/thextech/wohlnet-ci-ubuntu1604-32bit
+    build:
+      context: .
+      dockerfile: Docker-WohlSoft
+    container_name: wohlnet-ci-ubuntu1604-32bit
