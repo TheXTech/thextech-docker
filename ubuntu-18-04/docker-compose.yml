@@ -1,0 +1,7 @@
+services:
+  wohlnet-ci-ubuntu1804:
+    image: ghcr.io/thextech/wohlnet-ci-ubuntu1804
+    build:
+      context: .
+      dockerfile: Docker-WohlSoft
+    container_name: wohlnet-ci-ubuntu1804
