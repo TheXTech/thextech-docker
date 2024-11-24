@@ -25,3 +25,15 @@ docker push ghcr.io/thextech/<name-of-service>:latest
 - Remember the tocken.
 - Login `docker login ghcr.io -u <your-username>` with the command and pasting token as a password
 - And now, do publishing or deleting of containers.
+
+
+## Using published image in the CI
+When writing a YML file for the CI thing, you can add the `container` field that will contain the name of the container in next format:
+```yml
+container: "<name of container>:latest",
+```
+
+Example:
+```yml
+container: "ghcr.io/thextech/wohlnet-ci-ubuntu1604-32bit:latest",
+```
