@@ -1,0 +1,7 @@
+services:
+  wohlnet-ci-ubuntu2404-dkp-vita:
+    image: ghcr.io/thextech/wohlnet-ci-ubuntu2404-dkp-vita
+    build:
+      context: .
+      dockerfile: Docker-WohlSoft
+    container_name: wohlnet-ci-ubuntu2404-dkp-vita

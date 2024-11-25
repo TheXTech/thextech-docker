@@ -1,0 +1,166 @@
+FROM ubuntu:24.04
+
+USER root
+
+# RUN if getent passwd runner > /dev/null 2>&1; then userdel runner; fi
+# RUN groupadd -f -g 1000 runner
+# RUN useradd -ms /bin/bash -r -u 1000 -g 1000 runner
+
+RUN apt-get update -qq
+ENV TZ=Europe/Moscow
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+RUN mkdir -p /usr/local/etc/php/conf.d
+RUN printf '[PHP]\ndate.timezone = "Europe/Moscow"\n' > /usr/local/etc/php/conf.d/tzone.ini
+
+RUN DEBIAN_FRONTEND=noninteractive apt-get upgrade -y
+
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
+    apt-transport-https \
+    bash \
+    bzip2 \
+    cmake \
+    curl \
+    dos2unix \
+    fakeroot \
+    file \
+    git \
+    git-core \
+    lftp \
+    libarchive-tools \
+    make \
+    ninja-build \
+    ninja-build \
+    p7zip-full \
+    pkgconf \
+    python3 \
+    sudo \
+    udev \
+    wget \
+    xz-utils \
+    zip \
+    \
+    mtdev-tools \
+    webp
+
+SHELL ["/bin/bash", "-c"]
+
+RUN git config --global --add safe.directory '*'
+
+# =========== Installing Vita SDK ===========
+
+ENV VITASDK=/usr/local/vitasdk
+ENV PATH=$VITASDK/bin:$PATH
+
+RUN git clone https://github.com/vitasdk/vdpm.git
+RUN cd vdpm && ./bootstrap-vitasdk.sh && ./install-all.sh && cd ..
+RUN rm -Rf vdpm
+
+# =========== Installing DevkitPro ===========
+
+ENV DEVKITPRO=/opt/devkitpro
+ENV DEVKITARM=/opt/devkitpro/devkitARM
+ENV DEVKITPPC=/opt/devkitpro/devkitPPC
+
+RUN if [[ ! -f /usr/local/share/keyring/devkitpro-pub.gpg ]]; then \
+        echo "Adding DevkitPro's key..."; \
+        mkdir -p /usr/local/share/keyring/; \
+        wget -O /usr/local/share/keyring/devkitpro-pub.gpg https://apt.devkitpro.org/devkitpro-pub.gpg; \
+    else \
+        echo "DevkitPro's key already exists"; \
+        ls -la /usr/local/share/keyring/devkitpro-pub.gpg; \
+    fi
+RUN if [[ ! -f /etc/apt/sources.list.d/devkitpro.list ]]; then \
+        echo "Adding DevkitPro's repository..."; \
+        echo "deb [signed-by=/usr/local/share/keyring/devkitpro-pub.gpg] https://apt.devkitpro.org stable main" > /etc/apt/sources.list.d/devkitpro.list; \
+    else \
+        echo "DevkitPro's repository already exists..."; \
+        cat /etc/apt/sources.list.d/devkitpro.list; \
+    fi
+
+RUN apt-get update -qq
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y devkitpro-pacman
+
+RUN if [[ ! -f /etc/mtab ]]; then ln -s /proc/self/mounts /etc/mtab; fi
+
+RUN dkp-pacman -S --noconfirm \
+    3ds-cmake \
+    3dslink \
+    3ds-pkg-config \
+    3dstools \
+    citro2d \
+    citro3d \
+    default-arm7 \
+    deko3d \
+    devkitA64 \
+    devkita64-cmake \
+    devkita64-rules \
+    devkitARM \
+    devkitarm-cmake \
+    devkitarm-crtls \
+    devkitarm-rules \
+    devkit-env \
+    devkitPPC \
+    devkitppc-cmake \
+    devkitppc-rules \
+    dkp-cmake-common-utils \
+    dkp-cmake-common-utils \
+    dswifi \
+    dswifi \
+    gamecube-cmake \
+    libctru \
+    libfat-nds \
+    libfat-ogc \
+    libnx \
+    maxmod-nds \
+    nds-cmake \
+    nds-freetype \
+    nds-pkg-config \
+    ndstool \
+    nds-zlib \
+    ogc-cmake \
+    picasso \
+    ppc-libjpeg-turbo \
+    ppc-libogg \
+    ppc-libpng \
+    ppc-libvorbisidec \
+    switch-glad \
+    switch-libdrm_nouveau \
+    switch-libjpeg-turbo \
+    switch-libmodplug \
+    switch-libogg \
+    switch-libopus \
+    switch-libpng \
+    switch-libpng \
+    switch-mesa \
+    switch-mpg123 \
+    switch-sdl2 \
+    switch-sdl2_gfx \
+    switch-sdl2_image \
+    switch-sdl2_mixer \
+    switch-sdl2_net \
+    switch-sdl2_ttf \
+    switch-tools \
+    switch-zlib \
+    switch-zlib \
+    tex3ds \
+    uam \
+    wii-cmake \
+    wii-opengx \
+    wii-pkg-config \
+    wiiu-cmake \
+    wiiu-sdl2 \
+    wut \
+    wut-tools
+
+# FIXME: When a time comes, add the `wii-sdl2` into the list abkve and rebuild the container
+
+
+# RUN echo 'runner ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/runner
+
+# USER 1000:1000
+# RUN git config --global --add safe.directory '*'
+# USER root
+
+WORKDIR /home/runner
+ENTRYPOINT []
+CMD ["bash"]
