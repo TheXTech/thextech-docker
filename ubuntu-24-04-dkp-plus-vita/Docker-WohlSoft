@@ -29,7 +29,6 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
     libarchive-tools \
     make \
     ninja-build \
-    ninja-build \
     p7zip-full \
     pkgconf \
     python3 \
@@ -123,6 +122,7 @@ RUN dkp-pacman -S --noconfirm \
     ppc-libogg \
     ppc-libpng \
     ppc-libvorbisidec \
+    switch-cmake \
     switch-glad \
     switch-libdrm_nouveau \
     switch-libjpeg-turbo \
