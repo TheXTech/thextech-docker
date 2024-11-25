@@ -86,6 +86,15 @@ RUN dkp-pacman -S --noconfirm \
     3dslink \
     3ds-pkg-config \
     3dstools \
+    armv4t-bzip2 \
+    armv4t-freetype \
+    armv4t-liblzma \
+    armv4t-libpng \
+    armv4t-libvorbisidec \
+    armv4t-pkg-config \
+    armv4t-zlib \
+    calico \
+    catnip \
     citro2d \
     citro3d \
     default-arm7 \
@@ -102,8 +111,7 @@ RUN dkp-pacman -S --noconfirm \
     devkitppc-cmake \
     devkitppc-rules \
     dkp-cmake-common-utils \
-    dkp-cmake-common-utils \
-    dswifi \
+    dstools \
     dswifi \
     gamecube-cmake \
     libctru \
