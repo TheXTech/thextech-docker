@@ -1,0 +1,8 @@
+services:
+  wohlnet-ci-ubuntu2004-arm64:
+    image: ghcr.io/thextech/wohlnet-ci-ubuntu2004-arm64
+    build:
+      context: .
+      dockerfile: Docker-WohlSoft
+    container_name: wohlnet-ci-ubuntu2004-arm64
+
