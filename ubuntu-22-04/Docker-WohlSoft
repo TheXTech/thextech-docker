@@ -75,6 +75,9 @@ RUN git config --global --add safe.directory '*'
 
 RUN echo 'runner ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/runner
 
+RUN flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+RUN flatpak install -y flathub org.freedesktop.Platform/x86_64/22.08 org.freedesktop.Sdk/x86_64/22.08
+
 USER 1000:1000
 RUN git config --global --add safe.directory '*'
 USER root
