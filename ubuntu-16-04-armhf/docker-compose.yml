@@ -1,0 +1,8 @@
+services:
+  wohlnet-ci-ubuntu1604-armhf:
+    image: ghcr.io/thextech/wohlnet-ci-ubuntu1604-armhf
+    build:
+      context: .
+      dockerfile: Docker-WohlSoft
+    container_name: wohlnet-ci-ubuntu1604-armhf
+

@@ -1,0 +1,92 @@
+FROM arm64v8/ubuntu:16.04
+
+USER root
+
+RUN if getent passwd runner > /dev/null 2>&1; then userdel runner; fi
+RUN groupadd -f -g 1000 runner
+RUN useradd -ms /bin/bash -r -u 1000 -g 1000 runner
+
+RUN apt-get update -qq
+ENV TZ=Europe/Moscow
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+RUN mkdir -p /usr/local/etc/php/conf.d
+RUN printf '[PHP]\ndate.timezone = "Europe/Moscow"\n' > /usr/local/etc/php/conf.d/tzone.ini
+
+RUN DEBIAN_FRONTEND=noninteractive apt-get upgrade -y
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y software-properties-common
+RUN DEBIAN_FRONTEND=noninteractive add-apt-repository -y "ppa:git-core/ppa"
+
+RUN dpkg --add-architecture armhf
+RUN apt-get update -qq
+
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
+    gcc \
+    make \
+    gcc-arm-linux-gnueabihf \
+    g++-arm-linux-gnueabihf \
+    binutils-arm-linux-gnueabihf \
+    dos2unix \
+    git \
+    lftp \
+    ninja-build \
+    p7zip-full \
+    sudo \
+    udev \
+    wget \
+    \
+    debconf \
+    dpkg \
+    hashdeep \
+    lintian \
+    \
+    libasound2-dev:armhf \
+    libc6-dev:armhf \
+    libdbus-1-dev:armhf \
+    libegl1-mesa-dev:armhf \
+    libfontconfig1-dev:armhf \
+    libgl1-mesa-dev:armhf \
+    libgles2-mesa-dev:armhf \
+    libgles2-mesa:armhf \
+    libglu1-mesa-dev:armhf \
+    libgtk-3-dev:armhf \
+    libjpeg-dev:armhf \
+    libmirclient-dev:armhf \
+    libpng-dev:armhf \
+    libproxy-dev:armhf \
+    libpulse-dev:armhf \
+    libsdl2-dev:armhf \
+    libudev-dev:armhf \
+    libwayland-dev:armhf \
+    libx11-dev:armhf \
+    libx11-xcb-dev:armhf \
+    "^libxcb.*:armhf" \
+    libxcursor-dev:armhf \
+    libxext-dev:armhf \
+    libxi-dev:armhf \
+    libxinerama-dev:armhf \
+    libxkbcommon-dev:armhf \
+    libxrandr-dev:armhf \
+    libxrender-dev:armhf \
+    libxss-dev:armhf \
+    libxt-dev:armhf \
+    libxv-dev:armhf \
+    libxxf86vm-dev:armhf \
+    mesa-common-dev:armhf \
+    mtdev-tools \
+    webp
+
+RUN git config --global --add safe.directory '*'
+
+COPY build_cmake.sh .
+RUN bash build_cmake.sh; rm -f build_cmake.sh
+
+RUN echo 'runner ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/runner
+
+USER 1000:1000
+RUN git config --global --add safe.directory '*'
+USER root
+
+WORKDIR /home/runner
+ENTRYPOINT []
+CMD ["bash"]
+
