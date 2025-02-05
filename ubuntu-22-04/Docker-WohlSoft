@@ -65,7 +65,11 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
     libxxf86vm-dev \
     mesa-common-dev \
     mtdev-tools \
-    webp
+    webp \
+    \
+    flatpak \
+    flatpak-builder
+
 
 RUN git config --global --add safe.directory '*'
 
