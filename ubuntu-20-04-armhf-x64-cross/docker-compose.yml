@@ -1,0 +1,7 @@
+services:
+  wohlnet-ci-ubuntu2004-armhf-cross:
+    image: ghcr.io/thextech/wohlnet-ci-ubuntu2004-armhf-cross
+    build:
+      context: .
+      dockerfile: Docker-WohlSoft
+    container_name: wohlnet-ci-ubuntu2004-armhf-cross
