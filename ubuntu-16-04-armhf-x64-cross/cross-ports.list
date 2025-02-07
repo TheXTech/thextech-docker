@@ -1,0 +1,10 @@
+deb [ arch=arm64,armhf,ppc64el,riscv64,s390x ] http://ru.ports.ubuntu.com/ubuntu-ports/ xenial main restricted
+deb [ arch=arm64,armhf,ppc64el,riscv64,s390x ] http://ru.ports.ubuntu.com/ubuntu-ports/ xenial-updates main restricted
+deb [ arch=arm64,armhf,ppc64el,riscv64,s390x ] http://ru.ports.ubuntu.com/ubuntu-ports/ xenial universe
+deb [ arch=arm64,armhf,ppc64el,riscv64,s390x ] http://ru.ports.ubuntu.com/ubuntu-ports/ xenial-updates universe
+deb [ arch=arm64,armhf,ppc64el,riscv64,s390x ] http://ru.ports.ubuntu.com/ubuntu-ports/ xenial multiverse
+deb [ arch=arm64,armhf,ppc64el,riscv64,s390x ] http://ru.ports.ubuntu.com/ubuntu-ports/ xenial-updates multiverse
+deb [ arch=arm64,armhf,ppc64el,riscv64,s390x ] http://ru.ports.ubuntu.com/ubuntu-ports/ xenial-backports main restricted universe multiverse
+deb [ arch=arm64,armhf,ppc64el,riscv64,s390x ] http://ru.ports.ubuntu.com/ubuntu-ports/ xenial-security main restricted
+deb [ arch=arm64,armhf,ppc64el,riscv64,s390x ] http://ru.ports.ubuntu.com/ubuntu-ports/ xenial-security universe
+deb [ arch=arm64,armhf,ppc64el,riscv64,s390x ] http://ru.ports.ubuntu.com/ubuntu-ports/ xenial-security multiverse

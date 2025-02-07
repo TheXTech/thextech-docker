@@ -1,0 +1,90 @@
+FROM ubuntu:22.04
+
+USER root
+
+RUN if getent passwd runner > /dev/null 2>&1; then userdel runner; fi
+RUN groupadd -f -g 1000 runner
+RUN useradd -ms /bin/bash -r -u 1000 -g 1000 runner
+
+RUN apt-get update -qq
+ENV TZ=Europe/Moscow
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+RUN mkdir -p /usr/local/etc/php/conf.d
+RUN printf '[PHP]\ndate.timezone = "Europe/Moscow"\n' > /usr/local/etc/php/conf.d/tzone.ini
+
+RUN DEBIAN_FRONTEND=noninteractive apt-get upgrade -y
+
+RUN dpkg --add-architecture arm64
+COPY sources.list /etc/apt/sources.list
+COPY cross-ports.list /etc/apt/sources.list.d/cross-ports.list
+RUN apt-get update -qq
+
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
+    gcc \
+    make \
+    gcc-aarch64-linux-gnu \
+    g++-aarch64-linux-gnu \
+    binutils-aarch64-linux-gnu \
+    cmake \
+    dos2unix \
+    git \
+    lftp \
+    ninja-build \
+    p7zip-full \
+    sudo \
+    udev \
+    wget \
+    \
+    debconf \
+    dpkg \
+    hashdeep \
+    lintian \
+    \
+    libasound2-dev:arm64 \
+    libdbus-1-dev:arm64 \
+    libegl1-mesa-dev:arm64 \
+    libfontconfig1-dev:arm64 \
+    libgegl-dev:arm64 \
+    libgl1-mesa-dev:arm64 \
+    libgles2-mesa:arm64 \
+    libgles2-mesa-dev:arm64 \
+    libgles-dev:arm64 \
+    libglm-dev:arm64 \
+    libglu1-mesa-dev:arm64 \
+    libgtk-3-dev:arm64 \
+    libjpeg-dev:arm64 \
+    libpng-dev:arm64 \
+    libproxy-dev:arm64 \
+    libpulse-dev:arm64 \
+    libsdl2-dev:arm64 \
+    libudev-dev:arm64 \
+    libwayland-dev:arm64 \
+    libx11-dev:arm64 \
+    libx11-xcb-dev:arm64 \
+    "^libxcb.*":arm64 \
+    libxcursor-dev:arm64 \
+    libxext-dev:arm64 \
+    libxi-dev:arm64 \
+    libxinerama-dev:arm64 \
+    libxkbcommon-dev:arm64 \
+    libxrandr-dev:arm64 \
+    libxrender-dev:arm64 \
+    libxss-dev:arm64 \
+    libxt-dev:arm64 \
+    libxv-dev:arm64 \
+    libxxf86vm-dev:arm64 \
+    mesa-common-dev:arm64 \
+    mtdev-tools \
+    webp
+
+RUN git config --global --add safe.directory '*'
+
+RUN echo 'runner ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/runner
+
+USER 1000:1000
+RUN git config --global --add safe.directory '*'
+USER root
+
+WORKDIR /home/runner
+ENTRYPOINT []
+CMD ["bash"]
