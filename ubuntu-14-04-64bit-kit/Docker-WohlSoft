@@ -1,0 +1,105 @@
+FROM ubuntu:14.04
+
+USER root
+
+RUN if getent passwd runner > /dev/null 2>&1; then userdel runner; fi
+RUN groupadd -f -g 1000 runner
+RUN useradd -ms /bin/bash -r -u 1000 -g 1000 runner
+
+RUN apt-get update -qq
+ENV TZ=Europe/Moscow
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+RUN mkdir -p /usr/local/etc/php/conf.d
+RUN printf '[PHP]\ndate.timezone = "Europe/Moscow"\n' > /usr/local/etc/php/conf.d/tzone.ini
+
+RUN DEBIAN_FRONTEND=noninteractive apt-get upgrade -y
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y software-properties-common
+RUN DEBIAN_FRONTEND=noninteractive add-apt-repository -y "ppa:git-core/ppa"
+RUN DEBIAN_FRONTEND=noninteractive add-apt-repository -y "ppa:ubuntu-toolchain-r/test"
+
+RUN dpkg --add-architecture i386
+RUN apt-get update -qq
+
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
+    dos2unix \
+    git \
+    ninja-build \
+    p7zip-full \
+    sudo \
+    udev \
+    wget \
+    \
+    debconf \
+    dpkg \
+    md5deep \
+    lintian \
+    \
+    g++-8 \
+    gcc-8 \
+    libc6 \
+    libstdc++6 \
+    \
+    libasound2-dev \
+    libdbus-1-dev \
+    libegl1-mesa-dev \
+    libfontconfig1-dev \
+    libgegl-dev \
+    libgl1-mesa-dev \
+    libgles2-mesa \
+    libgles2-mesa-dev \
+    libglm-dev \
+    libglu1-mesa-dev \
+    libgtk-3-dev \
+    libjpeg-dev \
+    libmirclient-dev \
+    libpng-dev \
+    libproxy-dev \
+    libpulse-dev \
+    libsdl2-dev \
+    libudev-dev \
+    libwayland-dev \
+    libx11-dev \
+    libx11-xcb-dev \
+    "^libxcb.*" \
+    libxcursor-dev \
+    libxext-dev \
+    libxi-dev \
+    libxinerama-dev \
+    libxkbcommon-dev \
+    libxrandr-dev \
+    libxrender-dev \
+    libxss-dev \
+    libxt-dev \
+    libxv-dev \
+    libxxf86vm-dev \
+    mesa-common-dev \
+    mtdev-tools \
+    webp \
+    \
+    libexpat1 \
+    libgnutls28 \
+    libreadline6 \
+    libtinfo5 \
+    readline-common \
+    zlib1g
+
+RUN wget -q https://github.com/Kitware/CMake/releases/download/v3.15.4/cmake-3.15.4-Linux-x86_64.sh -O cmake-kit.sh
+RUN chmod uog+x cmake-kit.sh
+RUN ./cmake-kit.sh --skip-license --prefix=/usr
+RUN rm -f cmake-kit.sh
+RUN git config --global --add safe.directory '*'
+
+# Install pre-built LFTP
+RUN wget -q https://wohlsoft.ru/docs/Software/lftp-4.9.3-ubuntu14.04.tar.gz -O lftp.tar.gz
+RUN tar -xvf lftp.tar.gz -C /
+RUN rm -f lftp.tar.gz
+
+RUN echo 'runner ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/runner
+
+USER 1000:1000
+RUN git config --global --add safe.directory '*'
+USER root
+
+WORKDIR /home/runner
+ENTRYPOINT []
+CMD ["bash"]
