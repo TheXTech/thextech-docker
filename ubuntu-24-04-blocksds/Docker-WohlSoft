@@ -59,6 +59,8 @@ RUN /opt/wonderful/bin/wf-config repo enable blocksds
 RUN /opt/wonderful/bin/wf-pacman -Syu --noconfirm
 RUN /opt/wonderful/bin/wf-pacman -S --noconfirm blocksds-toolchain toolchain-llvm-teak-llvm blocksds-nflib blocksds-nitroengine
 RUN ln -s /opt/wonderful/thirdparty/blocksds /opt/blocksds
+# TEMPORARY: Once new update gets released, REMOVE THIS LINE
+COPY NintendoDS.cmake /opt/wonderful/thirdparty/blocksds/core/cmake/Platform/NintendoDS.cmake
 
 # RUN echo 'runner ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/runner
 
