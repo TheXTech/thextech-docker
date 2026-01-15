@@ -1,0 +1,7 @@
+services:
+  wohlnet-ci-ubuntu2404-blocksds:
+    image: ghcr.io/thextech/wohlnet-ci-ubuntu2404-blocksds
+    build:
+      context: .
+      dockerfile: Docker-WohlSoft
+    container_name: wohlnet-ci-ubuntu2404-blocksds

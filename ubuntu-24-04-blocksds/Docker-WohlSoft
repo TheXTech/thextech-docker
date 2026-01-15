@@ -1,0 +1,71 @@
+FROM ubuntu:24.04
+
+USER root
+
+# RUN if getent passwd runner > /dev/null 2>&1; then userdel runner; fi
+# RUN groupadd -f -g 1000 runner
+# RUN useradd -ms /bin/bash -r -u 1000 -g 1000 runner
+
+RUN apt-get update -qq
+ENV TZ=Europe/Moscow
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+RUN mkdir -p /usr/local/etc/php/conf.d
+RUN printf '[PHP]\ndate.timezone = "Europe/Moscow"\n' > /usr/local/etc/php/conf.d/tzone.ini
+
+RUN DEBIAN_FRONTEND=noninteractive apt-get upgrade -y
+
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
+    apt-transport-https \
+    bash \
+    bzip2 \
+    cmake \
+    curl \
+    dos2unix \
+    fakeroot \
+    file \
+    git \
+    git-core \
+    lftp \
+    libarchive-tools \
+    libgpgme11 \
+    libreadline8 \
+    libusb-0.1 \
+    make \
+    ninja-build \
+    p7zip-full \
+    pkgconf \
+    python3 \
+    sudo \
+    udev \
+    wget \
+    xz-utils \
+    zip \
+    \
+    mtdev-tools \
+    webp
+
+SHELL ["/bin/bash", "-c"]
+
+RUN git config --global --add safe.directory '*'
+
+# =========== Installing Blocks DS SDK ===========
+
+RUN mkdir /opt/wonderful
+RUN wget https://wonderful.asie.pl/bootstrap/wf-bootstrap-x86_64.tar.gz -O wf-bootstrap-x86_64.tar.gz
+RUN tar xzvf wf-bootstrap-x86_64.tar.gz -C /opt/wonderful
+RUN rm -f wf-bootstrap-x86_64.tar.gz
+RUN /opt/wonderful/bin/wf-pacman -Syu --noconfirm wf-tools
+RUN /opt/wonderful/bin/wf-config repo enable blocksds
+RUN /opt/wonderful/bin/wf-pacman -Syu --noconfirm
+RUN /opt/wonderful/bin/wf-pacman -S --noconfirm blocksds-toolchain toolchain-llvm-teak-llvm blocksds-nflib blocksds-nitroengine
+RUN ln -s /opt/wonderful/thirdparty/blocksds /opt/blocksds
+
+# RUN echo 'runner ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/runner
+
+# USER 1000:1000
+# RUN git config --global --add safe.directory '*'
+# USER root
+
+WORKDIR /home/runner
+ENTRYPOINT []
+CMD ["bash"]
