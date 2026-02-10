@@ -1,0 +1,7 @@
+services:
+  wohlnet-ci-debian13:
+    image: ghcr.io/thextech/wohlnet-ci-debian13
+    build:
+      context: .
+      dockerfile: Docker-WohlSoft
+    container_name: wohlnet-ci-debian13
