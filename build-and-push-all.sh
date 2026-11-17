@@ -15,6 +15,7 @@ for q in \
     cd $q
     ./push.sh
     echo "Clean-up..."
-    docker-compose down -v --rmi all --remove-orphans
+    docker compose down -v --rmi all --remove-orphans
     cd ..
 done
+
