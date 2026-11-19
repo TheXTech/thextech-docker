@@ -7,5 +7,6 @@ services:
       extra_hosts:
         - "devkitpro.org=193.124.59.31"
         - "pkg.devkitpro.org=193.124.59.31"
+        - "apt.devkitpro.org=193.124.59.31"
     container_name: wohlnet-ci-ubuntu2404-dkp-vita
 
