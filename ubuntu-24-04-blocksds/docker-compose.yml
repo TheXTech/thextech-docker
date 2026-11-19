@@ -4,4 +4,10 @@ services:
     build:
       context: .
       dockerfile: Docker-WohlSoft
+# WORKAROUND: Pull packages through a dedicated reverse proxy host
+# Otherwise it hangs when gets called directly
+      extra_hosts:
+        - "asie.pl=193.124.59.31"
+        - "wonderful.asie.pl=193.124.59.31"
     container_name: wohlnet-ci-ubuntu2404-blocksds
+
