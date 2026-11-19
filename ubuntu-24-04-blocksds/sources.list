@@ -1,0 +1,13 @@
+deb [ arch=amd64,i386 ] http://mirror.yandex.ru/ubuntu/ noble main restricted
+deb [ arch=amd64,i386 ] http://mirror.yandex.ru/ubuntu/ noble-updates main restricted
+deb [ arch=amd64,i386 ] http://mirror.yandex.ru/ubuntu/ noble universe
+deb [ arch=amd64,i386 ] http://mirror.yandex.ru/ubuntu/ noble-updates universe
+deb [ arch=amd64,i386 ] http://mirror.yandex.ru/ubuntu/ noble multiverse
+deb [ arch=amd64,i386 ] http://mirror.yandex.ru/ubuntu/ noble-updates multiverse
+deb [ arch=amd64,i386 ] http://mirror.yandex.ru/ubuntu/ noble-backports main restricted universe multiverse
+
+# They hangs!
+# deb [ arch=amd64,i386 ] http://security.ubuntu.com/ubuntu/ noble-security main restricted
+# deb [ arch=amd64,i386 ] http://security.ubuntu.com/ubuntu/ noble-security universe
+# deb [ arch=amd64,i386 ] http://security.ubuntu.com/ubuntu/ noble-security multiverse
+

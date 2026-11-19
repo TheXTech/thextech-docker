@@ -6,6 +6,8 @@ RUN if getent passwd runner > /dev/null 2>&1; then userdel runner; fi
 RUN groupadd -f -g 1000 runner
 RUN useradd -ms /bin/bash -r -u 1000 -g 1000 runner
 
+COPY sources.list /etc/apt/sources.list
+
 RUN apt-get update -qq
 ENV TZ=Europe/Moscow
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone

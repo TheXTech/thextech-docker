@@ -1,0 +1,13 @@
+deb [ arch=amd64,i386 ] http://mirror.yandex.ru/ubuntu/ bionic main restricted
+deb [ arch=amd64,i386 ] http://mirror.yandex.ru/ubuntu/ bionic-updates main restricted
+deb [ arch=amd64,i386 ] http://mirror.yandex.ru/ubuntu/ bionic universe
+deb [ arch=amd64,i386 ] http://mirror.yandex.ru/ubuntu/ bionic-updates universe
+deb [ arch=amd64,i386 ] http://mirror.yandex.ru/ubuntu/ bionic multiverse
+deb [ arch=amd64,i386 ] http://mirror.yandex.ru/ubuntu/ bionic-updates multiverse
+deb [ arch=amd64,i386 ] http://mirror.yandex.ru/ubuntu/ bionic-backports main restricted universe multiverse
+
+# They hangs!
+# deb [ arch=amd64,i386 ] http://security.ubuntu.com/ubuntu/ bionic-security main restricted
+# deb [ arch=amd64,i386 ] http://security.ubuntu.com/ubuntu/ bionic-security universe
+# deb [ arch=amd64,i386 ] http://security.ubuntu.com/ubuntu/ bionic-security multiverse
+
