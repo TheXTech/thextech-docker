@@ -47,6 +47,8 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
 SHELL ["/bin/bash", "-c"]
 
 RUN git config --global --add safe.directory '*'
+RUN git config --global user.email "robot@example.com"
+RUN git config --global user.name "Robot"
 
 # =========== Installing Vita SDK ===========
 
@@ -54,7 +56,9 @@ ENV VITASDK=/usr/local/vitasdk
 ENV PATH=$VITASDK/bin:$PATH
 
 RUN git clone https://github.com/vitasdk/vdpm.git
-RUN cd vdpm && ./bootstrap-vitasdk.sh && ./install-all.sh && cd ..
+# RUN cd vdpm && ./bootstrap-vitasdk.sh && ./install-all.sh && cd ..
+# TEMPORARY: Restore old line from above once THIS https://github.com/vitasdk/vdpm/pull/135 gets officially merged:
+RUN cd vdpm && git config pull.rebase true && git pull origin fix/legacy-entry-points && ./bootstrap-vitasdk.sh && ./install-all.sh && cd ..
 RUN rm -Rf vdpm
 
 # =========== Installing PSP SDK ===========
